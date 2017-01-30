@@ -22,19 +22,23 @@ static uint8_t port_rss_key[] = {
 
 int main()
 {
-	int i;
 	uint8_t *rss_key;
 
+	/*
+	 * See https://msdn.microsoft.com/en-us/library/windows/hardware/ff571021(v=vs.85).aspx
+	 */
 	rss_key = port_rss_key;
-
 	toeplitz_init(rss_key,sizeof(port_rss_key));
 
-	for(i=0;i<10;i++) {
-		uint32_t src = 1107924411+i;
-		uint32_t dst = 2710463568;
-		uint16_t sport = 2794;
-		uint16_t dport = 1766;	
+	uint32_t src = 1107924411; /*ip addr converted to int*/
+	uint32_t dst = 2710463568;
+	uint16_t sport = 2794;
+	uint16_t dport = 1766;	
 
-		printf("0x%8.8X\n",toeplitz_cpuhash_addrport(src,dst,sport,dport));
-	}
+	uint32_t hash = toeplitz_cpuhash_addrport(src,dst,sport,dport);
+	if(hash != 0x51ccc178)
+		printf("Hash order is not working: hash should be 0x%8.8X != 0x%8.8X\n",
+			0x51ccc178,hash);
+	else
+		printf("Hash order is working: 0x%8.8X\n",hash);
 }
