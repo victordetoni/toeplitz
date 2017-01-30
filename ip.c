@@ -23,14 +23,13 @@ static uint8_t port_rss_key[] = {
 int main()
 {
 	int i;
-//	uint32_t res;
 	uint8_t *rss_key;
 
 	rss_key = port_rss_key;
 
 	toeplitz_init(rss_key,sizeof(port_rss_key));
 
-	for(i=0;i<10000000;i++) {
+	for(i=0;i<10;i++) {
 		uint32_t src = 1107924411+i;
 		uint32_t dst = 2710463568;
 		uint16_t sport = 2794;
@@ -39,25 +38,3 @@ int main()
 		printf("0x%8.8X\n",toeplitz_cpuhash_addrport(src,dst,sport,dport));
 	}
 }
-/*	for(i=0;i<10;i++)
-	{
-		uint32_t ip4 = 2232238160+i;
-
-		res = ((ip4 >> 0) & 0xff);
-		res ^= ((ip4 >> 8) & 0xff);
-		res ^= ((ip4 >> 16) & 0xff);
-		res ^= ((ip4 >> 24) & 0xff);
-		printf("%d\n",res);
-		res = 0;
-		res = ((ip4 >> 0) & 0xff);
-		res += ((ip4 >> 8) & 0xff);
-		res += ((ip4 >> 16) & 0xff);
-		res += ((ip4 >> 24) & 0xff);
-		//printf("ip4+=%d\n",res);
-}*/
-
-/*	printf("faddr >> 0 = %d\n", ((ip4 >> 0) & 0xff));
-	printf("faddr >> 8 = %d\n", ((ip4 >> 8) & 0xff));
-	printf("faddr >> 16 = %d\n", ((ip4 >> 16) & 0xff));
-	printf("faddr >> 24 = %d\n", ((ip4 >> 24) & 0xff));*/
-//}
